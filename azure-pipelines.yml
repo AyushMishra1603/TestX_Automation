@@ -19,12 +19,20 @@ steps:
       pip install -r End_To_End_Testing/requirements.txt  # Install dependencies from requirements.txt
     displayName: 'Install dependencies'
 
-  # Step 3: Install Geckodriver
+  # Step 3: Install Google Chrome and ChromeDriver
   - script: |
-      wget https://github.com/mozilla/geckodriver/releases/latest/download/geckodriver-v0.34.0-linux64.tar.gz
-      tar -xzf geckodriver-v0.34.0-linux64.tar.gz
-      sudo mv geckodriver /usr/local/bin/  # Move the binary to a location in the PATH
-    displayName: 'Install Geckodriver'
+      # Install Chrome
+      wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      sudo apt install -y ./google-chrome-stable_current_amd64.deb
+      
+      # Install ChromeDriver
+      CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')  # Get Chrome version
+      DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)  # Get matching ChromeDriver version
+      wget https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip
+      unzip chromedriver_linux64.zip
+      sudo mv chromedriver /usr/local/bin/  # Move the binary to a location in the PATH
+      sudo chmod +x /usr/local/bin/chromedriver  # Make it executable
+    displayName: 'Install Google Chrome and ChromeDriver'
 
   # Step 4: Run Pytest to execute the tests
   - script: |
