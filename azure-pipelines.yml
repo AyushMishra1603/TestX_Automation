@@ -8,7 +8,7 @@ pool:
 
 steps:
   # Step 1: Set up Python environment
-  - task: UsePythonVersion@0  # Specify the major version of the task
+  - task: UsePythonVersion@0
     inputs:
       versionSpec: '3.12.3'  # Specify the Python version to use (3.x for the latest)
       addToPath: true
@@ -16,12 +16,19 @@ steps:
   # Step 2: Install dependencies (Selenium, Pytest, and other required packages)
   - script: |
       python -m pip install --upgrade pip  # Upgrade pip
-      pip install -r End_To_End_Testing/requirements.txt  # Update path to requirements.txt
+      pip install -r End_To_End_Testing/requirements.txt  # Install dependencies from requirements.txt
     displayName: 'Install dependencies'
 
-  # Step 3: Run Pytest to execute the tests
+  # Step 3: Install Geckodriver
   - script: |
-      pytest End_To_End_Testing/test_TC_001.py  # Corrected path to test script
+      wget https://github.com/mozilla/geckodriver/releases/latest/download/geckodriver-v0.34.0-linux64.tar.gz
+      tar -xzf geckodriver-v0.34.0-linux64.tar.gz
+      sudo mv geckodriver /usr/local/bin/  # Move the binary to a location in the PATH
+    displayName: 'Install Geckodriver'
+
+  # Step 4: Run Pytest to execute the tests
+  - script: |
+      pytest End_To_End_Testing/test_TC_001.py  # Adjust to your test directory
     displayName: 'Run Pytest'
   
   # Optional Step: Publish test results (JUnit format)
