@@ -1,12 +1,18 @@
 import time
 import os
-
 from selenium import webdriver
-from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 
-# Initialize the service for geckodriver; no need for a full path if it's in the system PATH
-service_obj = Service("geckodriver")  # Just specify "geckodriver" if it's in the PATH
-driver = webdriver.Firefox(service=service_obj)
+# Set up Chrome options
+chrome_options = Options()
+chrome_options.add_argument("--headless")  # Run in headless mode (optional)
+chrome_options.add_argument("--no-sandbox")  # Bypass OS security model (optional)
+chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems (optional)
+
+# Initialize the Chrome service
+service_obj = Service("chromedriver")  # Use just "chromedriver" if it's in the PATH
+driver = webdriver.Chrome(service=service_obj, options=chrome_options)
 
 def test_setup():
     driver.implicitly_wait(4)
