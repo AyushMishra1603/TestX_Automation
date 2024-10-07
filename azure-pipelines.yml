@@ -16,12 +16,12 @@ steps:
   # Step 2: Install dependencies (Selenium, Pytest, and other required packages)
   - script: |
       python -m pip install --upgrade pip  # Upgrade pip
-      pip install -r requirements.txt      # Install dependencies from requirements.txt
+      pip install -r End_To_End_Testing/requirements.txt  # Update path to requirements.txt
     displayName: 'Install dependencies'
 
   # Step 3: Run Pytest to execute the tests
   - script: |
-      pytest tests/End_To_End_Testing/test_TC_001.py  # Adjust to your test directory
+      pytest End_To_End_Testing/test_TC_001.py  # Corrected path to test script
     displayName: 'Run Pytest'
   
   # Optional Step: Publish test results (JUnit format)
